@@ -24,6 +24,7 @@
     <ProjectGuid>{186055f9-98e9-474e-9ff3-173f37dd362c}</ProjectGuid>
     <RootNamespace>RoboCatSFMLServer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>MeteorSFMLServer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
