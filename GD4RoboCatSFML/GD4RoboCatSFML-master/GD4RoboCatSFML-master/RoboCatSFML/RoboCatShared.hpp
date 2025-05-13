@@ -94,3 +94,7 @@ class GameObject;
 #include "ReplicationCommand.hpp"
 #include "NetworkManager.hpp"
 #include "Engine.hpp"
+
+#include "Trignometry.hpp"
+#include "VectorAlgebra2D.hpp"
+#include "ConnectionDetails.hpp"
