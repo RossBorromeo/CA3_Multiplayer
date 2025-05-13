@@ -24,6 +24,8 @@ private:
 
 	sf::View view;
 
+	// Background scroll
+	float mBackgroundScrollOffset = 0.f;
 
 };
 

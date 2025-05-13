@@ -101,18 +101,23 @@ void RenderManager::RenderComponents()
 
 void RenderManager::Render()
 {
-	//
-	// Clear the back buffer
-	//
+	// Clear back buffer
 	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
 
-	RenderManager::sInstance->RenderComponents();
+	//Draw background first
+	sf::Sprite bgSprite;
+	bgSprite.setTexture(*TextureManager::sInstance->GetTexture("Space"));
+	bgSprite.setPosition(0.f, 0.f);
+	WindowManager::sInstance->draw(bgSprite);
 
+	// Then draw sprites and components
+	RenderComponents();
+
+	//Then draw HUD (always on top)
 	HUD::sInstance->Render();
 
-	//
-	// Present our back buffer to our front buffer
-	//
+	// Present back buffer to screen
 	WindowManager::sInstance->display();
-
 }
+
+

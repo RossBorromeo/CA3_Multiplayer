@@ -12,6 +12,8 @@ TextureManager::TextureManager()
 	CacheTexture("Ship", "../Assets/Ship.png");
 	CacheTexture("mouse", "../Assets/mouse.png");
 	CacheTexture("Laser", "../Assets/Laser.png");
+	CacheTexture("Space", "../Assets/NewSpace.png");
+
 }
 
 TexturePtr	TextureManager::GetTexture(const string& inTextureName)

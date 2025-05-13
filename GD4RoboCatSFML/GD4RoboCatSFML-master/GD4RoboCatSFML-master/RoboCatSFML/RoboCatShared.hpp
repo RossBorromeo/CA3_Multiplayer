@@ -35,6 +35,7 @@ const int SOCKET_ERROR = -1;
 #include "deque"
 #include "unordered_set"
 #include "cassert"
+#include <fstream>
 
 using std::shared_ptr;
 using std::unique_ptr;
