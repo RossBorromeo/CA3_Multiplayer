@@ -111,6 +111,12 @@
     <ClInclude Include="LinkingContext.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Meteor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -186,6 +192,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InFlightPacket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Meteor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

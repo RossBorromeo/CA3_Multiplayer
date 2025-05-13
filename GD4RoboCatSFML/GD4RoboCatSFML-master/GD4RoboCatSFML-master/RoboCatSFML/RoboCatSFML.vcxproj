@@ -162,6 +162,7 @@
     <ClInclude Include="InputState.hpp" />
     <ClInclude Include="LinkingContext.hpp" />
     <ClInclude Include="MemoryBitStream.hpp" />
+    <ClInclude Include="Meteor.hpp" />
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="MoveList.hpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="RoboCatShared.hpp" />
     <ClInclude Include="RoboMath.hpp" />
     <ClInclude Include="ScoreBoardManager.hpp" />
+    <ClInclude Include="Ship.hpp" />
     <ClInclude Include="SocketAddress.hpp" />
     <ClInclude Include="SocketAddressFactory.hpp" />
     <ClInclude Include="SocketUtil.hpp" />
@@ -193,6 +195,7 @@
     <ClCompile Include="InFlightPacket.cpp" />
     <ClCompile Include="InputState.cpp" />
     <ClCompile Include="MemoryBitStream.cpp" />
+    <ClCompile Include="Meteor.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveList.cpp" />
@@ -206,6 +209,7 @@
     </ClCompile>
     <ClCompile Include="RoboMath.cpp" />
     <ClCompile Include="ScoreBoardManager.cpp" />
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="SocketAddress.cpp" />
     <ClCompile Include="SocketAddressFactory.cpp" />
     <ClCompile Include="SocketUtil.cpp" />
