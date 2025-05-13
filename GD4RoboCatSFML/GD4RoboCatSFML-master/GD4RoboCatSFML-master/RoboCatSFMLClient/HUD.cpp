@@ -4,11 +4,11 @@ std::unique_ptr< HUD >	HUD::sInstance;
 
 
 HUD::HUD() :
-	mScoreBoardOrigin(50.f, 60.f, 0.0f),
-	mBandwidthOrigin(50.f, 10.f, 0.0f),
-	mRoundTripTimeOrigin(580.f, 10.f, 0.0f),
+	mScoreBoardOrigin(45.f, 60.f, 0.0f),
+	mBandwidthOrigin(45.f, 10.f, 0.0f),
+	mRoundTripTimeOrigin(1025.f, 10.f, 0.0f),
 	mScoreOffset(0.f, 50.f, 0.0f),
-	mHealthOffset(1000, 10.f, 0.0f),
+	mHealthOffset(1100, 10.f, 0.0f),
 	mHealth(0)
 {
 }
@@ -24,7 +24,7 @@ void HUD::Render()
 	RenderBandWidth();
 	RenderRoundTripTime();
 	RenderScoreBoard();
-	RenderHealth();
+	//RenderHealth();
 }
 
 void HUD::RenderHealth()
@@ -32,7 +32,7 @@ void HUD::RenderHealth()
 	if (mHealth > 0)
 	{
 		string healthString = StringUtils::Sprintf("Health %d", mHealth);
-		RenderText(healthString, mHealthOffset, Colors::Red);
+		RenderText(healthString, mHealthOffset, Colors::White);
 	}
 }
 
@@ -41,7 +41,7 @@ void HUD::RenderBandWidth()
 	string bandwidth = StringUtils::Sprintf("In %d  Bps, Out %d Bps",
 		static_cast<int>(NetworkManagerClient::sInstance->GetBytesReceivedPerSecond().GetValue()),
 		static_cast<int>(NetworkManagerClient::sInstance->GetBytesSentPerSecond().GetValue()));
-	RenderText(bandwidth, mBandwidthOrigin, Colors::White);
+	RenderText(bandwidth, mBandwidthOrigin, Colors::LightGreen);
 }
 
 void HUD::RenderRoundTripTime()
@@ -49,7 +49,7 @@ void HUD::RenderRoundTripTime()
 	float rttMS = NetworkManagerClient::sInstance->GetAvgRoundTripTime().GetValue() * 1000.f;
 
 	string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int)rttMS);
-	RenderText(roundTripTime, mRoundTripTimeOrigin, Colors::White);
+	RenderText(roundTripTime, mRoundTripTimeOrigin, Colors::LightGreen);
 }
 
 void HUD::RenderScoreBoard()
@@ -71,9 +71,9 @@ void HUD::RenderText(const string& inStr, const Vector3& origin, const Vector3& 
 	sf::Text text;
 	text.setString(inStr);
 	text.setFillColor(sf::Color(inColor.mX, inColor.mY, inColor.mZ, 255));
-	text.setCharacterSize(50);
+	text.setCharacterSize(30);
 	text.setPosition(origin.mX, origin.mY);
-	text.setFont(*FontManager::sInstance->GetFont("carlito"));
+	text.setFont(*FontManager::sInstance->GetFont("Pixel"));
 	WindowManager::sInstance->draw(text);
 }
 
