@@ -1,5 +1,15 @@
 #include "RoboCatClientPCH.hpp"
 
+template<typename T>
+const T& clamp(const T& v, const T& lo, const T& hi)
+{
+	return (v < lo) ? lo : (v > hi) ? hi : v;
+}
+
+constexpr float worldWidth = 1920.f;
+constexpr float worldHeight = 1080.f;
+
+
 std::unique_ptr<RenderManager> RenderManager::sInstance;
 
 RenderManager::RenderManager()
@@ -51,20 +61,29 @@ void RenderManager::UpdateCamera()
 {
 	sf::Vector2f playerPos = FindCatCentre();
 
-	if (playerPos != sf::Vector2f(-1.f, -1.f)) // Valid player found
+	if (playerPos != sf::Vector2f(-1.f, -1.f))
 	{
 		constexpr float followSpeed = 0.1f;
 		const sf::Vector2f currentCenter = view.getCenter();
-		const sf::Vector2f newCenter = currentCenter + (playerPos - currentCenter) * followSpeed;
+		const sf::Vector2f targetCenter = currentCenter + (playerPos - currentCenter) * followSpeed;
 
-		view.setCenter(newCenter);
+		// Get view size
+		const sf::Vector2f viewSize = view.getSize();
+
+		// Clamp the new camera center so it doesn't go out of bounds
+		sf::Vector2f clampedCenter = targetCenter;
+
+		const float halfWidth = viewSize.x / 2.f;
+		const float halfHeight = viewSize.y / 2.f;
+
+		clampedCenter.x = clamp(clampedCenter.x, halfWidth, worldWidth - halfWidth);
+		clampedCenter.y = clamp(clampedCenter.y, halfHeight, worldHeight - halfHeight);
+
+		view.setCenter(clampedCenter);
 		WindowManager::sInstance->setView(view);
 	}
-	else
-	{
-		std::cout << " Could not find player cat — camera not updated.\n";
-	}
 }
+
 
 // Way of finding this clients cat, and then centre point. - Ronan
 sf::Vector2f RenderManager::FindCatCentre()
@@ -89,11 +108,6 @@ sf::Vector2f RenderManager::FindCatCentre()
 		}
 	}
 }
-
-
-
-
-
 void RenderManager::Render()
 {
 	UpdateCamera();
@@ -113,12 +127,6 @@ void RenderManager::Render()
 	// Draw HUD on top
 	HUD::sInstance->Render();
 
-	sf::CircleShape debugCircle(10.f);
-	debugCircle.setFillColor(sf::Color::Red);
-	debugCircle.setOrigin(10.f, 10.f); // center it
-	debugCircle.setPosition(view.getCenter());
-
-	WindowManager::sInstance->draw(debugCircle);
 
 
 	// Present to screen
