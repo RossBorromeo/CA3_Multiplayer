@@ -10,7 +10,7 @@ void TextureManager::StaticInit()
 TextureManager::TextureManager()
 {
 	CacheTexture("Ship", "../Assets/Ship.png");
-	CacheTexture("mouse", "../Assets/mouse.png");
+	CacheTexture("Asteroid", "../Assets/Asteroid.png");
 	CacheTexture("Laser", "../Assets/Laser.png");
 	CacheTexture("Space", "../Assets/NewSpace.png");
 

@@ -19,9 +19,14 @@ public:
 	void			RespawnCats();
 
 	ClientProxyPtr	GetClientProxy(int inPlayerId) const;
+	ReplicationManagerServer* GetReplicationManagerServer() const { return mReplicationManagerServer; }
+
 
 private:
 	NetworkManagerServer();
+
+	ReplicationManagerServer* mReplicationManagerServer;
+
 
 	void	HandlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress);
 	void	ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream);
