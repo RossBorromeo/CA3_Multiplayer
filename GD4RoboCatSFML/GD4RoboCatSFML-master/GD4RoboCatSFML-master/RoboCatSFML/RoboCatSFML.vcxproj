@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="AckRange.hpp" />
     <ClInclude Include="ByteSwap.hpp" />
+    <ClInclude Include="ConnectionDetails.hpp" />
     <ClInclude Include="DeliveryNotificationManager.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="GameObject.hpp" />
@@ -182,13 +183,16 @@
     <ClInclude Include="TCPSocket.hpp" />
     <ClInclude Include="Timing.hpp" />
     <ClInclude Include="TransmissionData.hpp" />
+    <ClInclude Include="Trignometry.hpp" />
     <ClInclude Include="UDPSocket.hpp" />
+    <ClInclude Include="VectorAlgebra2D.hpp" />
     <ClInclude Include="WeightedTimedMovingAverage.hpp" />
     <ClInclude Include="World.hpp" />
     <ClInclude Include="Yarn.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AckRange.cpp" />
+    <ClCompile Include="ConnectionDetails.cpp" />
     <ClCompile Include="DeliveryNotificationManager.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -217,9 +221,13 @@
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Timing.cpp" />
+    <ClCompile Include="Trignometry.cpp" />
     <ClCompile Include="UDPSocket.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="Yarn.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VectorAlgebra2D.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

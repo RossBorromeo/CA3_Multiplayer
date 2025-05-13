@@ -117,6 +117,15 @@
     <ClInclude Include="Ship.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ConnectionDetails.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trignometry.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorAlgebra2D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -200,5 +209,16 @@
     <ClCompile Include="Ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectionDetails.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trignometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VectorAlgebra2D.inl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
