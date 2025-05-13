@@ -33,11 +33,13 @@ public:
 
 protected:
 	Yarn();
+
+
 	Vector3		mVelocity;
+
 	float		mMuzzleSpeed;
 	int			mPlayerId;
 
 };
 
 typedef shared_ptr< Yarn >	YarnPtr;
-
