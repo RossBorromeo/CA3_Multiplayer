@@ -71,6 +71,16 @@ void RenderManager::RenderComponents()
 	for (const auto& gameObject : World::sInstance->GetGameObjects())
 	{
 		RoboCatClient* robocat = dynamic_cast<RoboCatClient*>(gameObject.get());
+
+		MouseClient* mouse = dynamic_cast<MouseClient*>(gameObject.get());
+		if (mouse)
+		{
+			Vector3 loc = mouse->GetLocation();
+			Vector3 textLoc = loc + Vector3(0.f, -40.f, 0.f); // slightly above mouse
+
+			int health = mouse->GetHealth();
+		}
+
 		if (robocat)
 		{
 			Vector3 loc = robocat->GetLocation();

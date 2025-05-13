@@ -66,8 +66,6 @@ namespace
 			go->SetLocation(mouseLocation);
 		}
 	}
-
-
 }
 
 
@@ -109,8 +107,16 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+	float margin = 100.f; 
+	float worldW = 1920.f;
+	float worldH = 1080.f;
+
+	float x = margin + static_cast<float>(rand()) / RAND_MAX * (worldW - 2 * margin);
+	float y = margin + static_cast<float>(rand()) / RAND_MAX * (worldH - 2 * margin);
+
+	cat->SetLocation(Vector3(x, y, 0.f));
 }
+
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)
 {

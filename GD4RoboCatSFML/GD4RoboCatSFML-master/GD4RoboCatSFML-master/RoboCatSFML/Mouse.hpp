@@ -2,14 +2,17 @@ class Mouse : public GameObject
 {
 public:
 	CLASS_IDENTIFICATION('MOUS', GameObject)
-
-	enum EMouseReplicationState
+	
+		enum MouseReplicationState
 	{
 		EMRS_Pose = 1 << 0,
 		EMRS_Color = 1 << 1,
+		EMRS_Health = 1 << 2,
 
-		EMRS_AllState = EMRS_Pose | EMRS_Color
+		EMRS_AllState = EMRS_Pose | EMRS_Color | EMRS_Health
 	};
+
+
 
 	static	GameObject* StaticCreate() { return new Mouse(); }
 
@@ -22,5 +25,6 @@ public:
 
 protected:
 	Mouse();
+	int mHealth = 5;
 };
 
