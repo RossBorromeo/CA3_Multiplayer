@@ -4,9 +4,17 @@ std::unique_ptr< RenderManager >	RenderManager::sInstance;
 
 RenderManager::RenderManager()
 {
-	view.reset(sf::FloatRect(0, 0, 1280, 720));
-	WindowManager::sInstance->setView(view);
+	view.reset(sf::FloatRect(0, 0, 1920, 1080));
+	//WindowManager::sInstance->setView(view);
+
+	if (const auto& player = NetworkManagerClient::sInstance->GetGameObject(NetworkManagerClient::sInstance->GetPlayerId()))
+	{
+		view.setCenter(player->GetLocation().mX, player->GetLocation().mY);
+		WindowManager::sInstance->setView(view);
+	}
 }
+
+
 
 
 void RenderManager::StaticInit()
@@ -58,6 +66,36 @@ void RenderManager::RenderComponents()
 	for (SpriteComponent* c : mComponents)
 	{	
 		WindowManager::sInstance->draw(c->GetSprite());	
+	}
+
+	for (const auto& gameObject : World::sInstance->GetGameObjects())
+	{
+		RoboCatClient* robocat = dynamic_cast<RoboCatClient*>(gameObject.get());
+		if (robocat)
+		{
+			Vector3 loc = robocat->GetLocation();
+			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f); // 50 units above the cat
+
+			int health = robocat->GetHealth();
+
+			if (health > 0)
+			{
+				std::string healthStr = StringUtils::Sprintf("HP: %d", health);
+
+				sf::Text text;
+				text.setString(healthStr);
+				text.setFillColor(sf::Color::White);
+				text.setCharacterSize(20);
+				text.setFont(*FontManager::sInstance->GetFont("Pixel"));
+
+				//Center the origin of the text
+				sf::FloatRect textBounds = text.getLocalBounds();
+				text.setOrigin(textBounds.width / 2.f, textBounds.height / 2.f);
+
+				text.setPosition(textLoc.mX, textLoc.mY);
+				WindowManager::sInstance->draw(text);
+			}
+		}
 	}
 }
 

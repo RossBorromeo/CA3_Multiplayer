@@ -9,9 +9,9 @@ void TextureManager::StaticInit()
 
 TextureManager::TextureManager()
 {
-	CacheTexture("cat", "../Assets/cat.png");
+	CacheTexture("Ship", "../Assets/Ship.png");
 	CacheTexture("mouse", "../Assets/mouse.png");
-	CacheTexture("yarn", "../Assets/yarn.png");
+	CacheTexture("Laser", "../Assets/Laser.png");
 }
 
 TexturePtr	TextureManager::GetTexture(const string& inTextureName)
