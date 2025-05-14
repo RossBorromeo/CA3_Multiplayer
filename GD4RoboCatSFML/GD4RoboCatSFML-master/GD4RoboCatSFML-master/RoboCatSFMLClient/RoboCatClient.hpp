@@ -21,6 +21,9 @@ private:
 	float mTimeLocationBecameOutOfSync;
 	float mTimeVelocityBecameOutOfSync;
 
+	float mTimeOfNextShootSound;
+	float mTimeBetweenShootSounds;
+
 	SpriteComponentPtr mSpriteComponent;
 };
 

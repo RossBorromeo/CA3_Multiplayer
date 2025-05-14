@@ -9,5 +9,7 @@ private:
 	void ReadAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId);
 	void ReadAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId);
 
+
+
 };
 

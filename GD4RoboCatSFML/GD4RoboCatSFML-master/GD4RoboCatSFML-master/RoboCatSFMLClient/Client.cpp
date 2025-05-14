@@ -11,10 +11,19 @@ bool Client::StaticInit()
 	TextureManager::StaticInit();
 	RenderManager::StaticInit();
 	
+	// Initialize the sound system
+	SoundManager::StaticInit();
+
+	
 
 	HUD::StaticInit();
 
+
+
 	s_instance.reset(client);
+
+	// Start background music if desired
+	SoundManager::sInstance->PlayMusic();
 
 	return true;
 }

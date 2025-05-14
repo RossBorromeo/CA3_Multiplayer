@@ -2,7 +2,9 @@
 
 RoboCatClient::RoboCatClient() :
 	mTimeLocationBecameOutOfSync(0.f),
-	mTimeVelocityBecameOutOfSync(0.f)
+	mTimeVelocityBecameOutOfSync(0.f),
+	mTimeOfNextShootSound(0.f),
+	mTimeBetweenShootSounds(0.75f)
 {
 	mSpriteComponent.reset(new PlayerSpriteComponent(this));
 	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("Ship"));
@@ -34,6 +36,18 @@ void RoboCatClient::Update()
 			//apply that input
 
 			ProcessInput(deltaTime, pendingMove->GetInputState());
+
+			float time = Timing::sInstance.GetFrameStartTime();
+
+			if (pendingMove->GetInputState().IsShooting() && time >= mTimeOfNextShootSound)
+			{
+				if (SoundManager::sInstance)
+				{
+					SoundManager::sInstance->PlaySound(SoundManager::STP_Shoot);
+				}
+				mTimeOfNextShootSound = time + mTimeBetweenShootSounds;
+			}
+
 
 			//and simulate!
 
@@ -122,6 +136,17 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		mHealth = 0;
 		inInputStream.Read(mHealth, 4);
 		readState |= ECRS_Health;
+	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		if (SoundManager::sInstance)
+		{
+			SoundManager::sInstance->PlaySound(SoundManager::STP_Death);
+		}
+
+		readState |= ECRS_PlayDeathSound;
 	}
 
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())

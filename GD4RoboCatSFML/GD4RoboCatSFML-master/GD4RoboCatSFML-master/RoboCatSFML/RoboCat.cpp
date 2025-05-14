@@ -211,6 +211,8 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write((bool)false);
 	}
 
+
+
 	//always write mThrustDir- it's just two bits
 	if (mThrustDir != 0.f)
 	{
@@ -245,6 +247,18 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	{
 		inOutputStream.Write((bool)false);
 	}
+
+	if (inDirtyState & ECRS_PlayDeathSound)
+	{
+		inOutputStream.Write(true);
+		writtenState |= ECRS_PlayDeathSound;
+	}
+	else
+	{
+		inOutputStream.Write(false);
+	}
+
+
 
 	return writtenState;
 

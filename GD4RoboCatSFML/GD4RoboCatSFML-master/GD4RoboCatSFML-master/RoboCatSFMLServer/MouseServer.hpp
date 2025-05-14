@@ -12,6 +12,8 @@ protected:
     MouseServer();
 
 private:
-    int mHealth = 5;
+    int mHealth = 2;
     Vector3 mVelocity; //for mouse movement
+    bool mDeathReported = false;
+
 };
