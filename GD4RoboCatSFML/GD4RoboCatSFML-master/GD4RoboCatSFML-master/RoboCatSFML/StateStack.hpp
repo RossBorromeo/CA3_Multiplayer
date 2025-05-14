@@ -39,6 +39,8 @@ public:
 	void Update(float dt);
 	void Render(sf::RenderWindow& window);
 
+	void ApplyPendingChanges();
+
 private:
 	std::vector<std::unique_ptr<State>> mStates;
 	std::vector<PendingChange> mPendingChanges;

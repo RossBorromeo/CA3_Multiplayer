@@ -6,7 +6,8 @@
 class MenuState : public State
 {
 public:
-	MenuState(StateStack& stack);
+	
+	explicit MenuState(StateStack& stack);
 	void HandleInput(const sf::Event& event) override;
 	void Update(float dt) override;
 	void Render(sf::RenderWindow& window) override;

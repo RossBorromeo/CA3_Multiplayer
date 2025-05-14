@@ -1,6 +1,6 @@
 #include "RoboCatClientPCH.hpp"
 
-MenuState::MenuState(StateStack& stack) : mStack(stack)
+MenuState::MenuState(StateStack& stack) : State(stack), mStack(stack)
 {
 	mFont.loadFromFile("../Assets/fonts/Carlito-Regular.ttf");
 

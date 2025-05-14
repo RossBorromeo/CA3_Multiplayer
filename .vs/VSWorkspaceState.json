@@ -4,8 +4,9 @@
     "\\GD4RoboCatSFML",
     "\\GD4RoboCatSFML\\GD4RoboCatSFML-master",
     "\\GD4RoboCatSFML\\GD4RoboCatSFML-master\\GD4RoboCatSFML-master",
-    "\\GD4RoboCatSFML\\GD4RoboCatSFML-master\\GD4RoboCatSFML-master\\RoboCatSFMLClient"
+    "\\GD4RoboCatSFML\\GD4RoboCatSFML-master\\GD4RoboCatSFML-master\\RoboCatSFMLClient",
+    "\\GD4RoboCatSFML\\GD4RoboCatSFML-master\\GD4RoboCatSFML-master\\RoboCatSFMLServer"
   ],
-  "SelectedNode": "\\GD4RoboCatSFML\\GD4RoboCatSFML-master\\GD4RoboCatSFML-master\\RoboCatSFML.sln",
+  "SelectedNode": "\\GD4RoboCatSFML\\GD4RoboCatSFML-master\\GD4RoboCatSFML-master\\RoboCatSFMLServer\\RoboCatServerPCH.hpp",
   "PreviewInSolutionExplorer": false
 }

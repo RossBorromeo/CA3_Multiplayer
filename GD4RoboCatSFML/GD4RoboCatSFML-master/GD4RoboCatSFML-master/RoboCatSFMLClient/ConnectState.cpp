@@ -1,6 +1,6 @@
 #include "RoboCatClientPCH.hpp"
 
-ConnectState::ConnectState(StateStack& stack) : mStack(stack)
+ConnectState::ConnectState(StateStack& stack) : State(stack) , mStack(stack)
 {
 	mFont.loadFromFile("../Assets/fonts/Carlito-Regular.ttf"); // Adjust if needed
 
@@ -109,7 +109,9 @@ void ConnectState::TryConnect()
 
 	std::cerr << "[ConnectState] NetworkManagerClient::StaticInit done." << std::endl;
 
-	 mStack.Clear();
+	mStack.RequestClear();
+	mStack.RequestPush(std::make_unique<GameState>(mStack));
+
 }
 
 

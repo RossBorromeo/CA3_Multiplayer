@@ -22,6 +22,7 @@
     <ClInclude Include="Client.hpp" />
     <ClInclude Include="ConnectState.hpp" />
     <ClInclude Include="FontManager.hpp" />
+    <ClInclude Include="GameState.hpp" />
     <ClInclude Include="HealthPickupClient.hpp" />
     <ClInclude Include="HUD.hpp" />
     <ClInclude Include="InputManager.hpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="ClientMain.cpp" />
     <ClCompile Include="ConnectState.cpp" />
     <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="HealthPickupClient.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />

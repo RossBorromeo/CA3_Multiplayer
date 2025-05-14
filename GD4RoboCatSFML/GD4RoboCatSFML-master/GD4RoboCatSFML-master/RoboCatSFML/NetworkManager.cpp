@@ -14,27 +14,33 @@ NetworkManager::~NetworkManager()
 bool NetworkManager::Init(uint16_t inPort)
 {
 	m_socket = SocketUtil::CreateUDPSocket(INET);
+	if (!m_socket)
+	{
+		std::cerr << "[NetworkManager] Failed to create UDP socket.\n";
+		return false;
+	}
+
 	SocketAddress ownAddress(INADDR_ANY, inPort);
-	m_socket->Bind(ownAddress);
+	if (m_socket->Bind(ownAddress) != NO_ERROR)
+	{
+		std::cerr << "[NetworkManager] Failed to bind UDP socket to port " << inPort << std::endl;
+		return false;
+	}
 
 	LOG("Initializing NetworkManager at port %d", inPort);
 
 	m_bytes_received_per_second = WeightedTimedMovingAverage(1.f);
 	m_bytes_sent_per_second = WeightedTimedMovingAverage(1.f);
 
-	//did we bind okay?
-	if (m_socket == nullptr)
-	{
-		return false;
-	}
-
 	if (m_socket->SetNonBlockingMode(true) != NO_ERROR)
 	{
+		std::cerr << "[NetworkManager] Failed to set non-blocking mode.\n";
 		return false;
 	}
 
 	return true;
 }
+
 
 void NetworkManager::ProcessIncomingPackets()
 {

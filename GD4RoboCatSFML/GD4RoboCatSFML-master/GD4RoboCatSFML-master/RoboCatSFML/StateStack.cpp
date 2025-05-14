@@ -85,6 +85,33 @@ void StateStack::Render(sf::RenderWindow& window)
 		mStates.back()->Render(window);
 }
 
+void StateStack::ApplyPendingChanges()
+{
+	for ( PendingChange& change : mPendingChanges)
+	{
+		switch (change.action)
+		{
+		case Action::Push:
+			if (change.state)
+			{
+				mStates.push_back(std::move(change.state));
+			}
+			break;
+		case Action::Pop:
+			if (!mStates.empty())
+			{
+				mStates.pop_back();
+			}
+			break;
+		case Action::Clear:
+			mStates.clear();
+			break;
+		}
+	}
+	mPendingChanges.clear();
+}
+
+
 
 
 

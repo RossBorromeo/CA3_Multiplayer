@@ -45,11 +45,27 @@ int Server::Run()
 
 bool Server::InitNetworkManager()
 {
-	string portString = StringUtils::GetCommandLineArg(1);
-	uint16_t port = stoi(portString);
+	std::string portString = StringUtils::GetCommandLineArg(1);
+	uint16_t port = 50001; // Default port
 
+	if (!portString.empty())
+	{
+		try {
+			port = static_cast<uint16_t>(std::stoi(portString));
+		}
+		catch (...) {
+			std::cerr << "[Server] Invalid port argument. Using default 50001.\n";
+		}
+	}
+	else
+	{
+		std::cout << "[Server] No port argument provided. Using default 50001.\n";
+	}
+
+	std::cout << "[Server] Binding on port: " << port << std::endl;
 	return NetworkManagerServer::StaticInit(port);
 }
+
 
 GameObjectPtr CreateSingleMouse()
 {

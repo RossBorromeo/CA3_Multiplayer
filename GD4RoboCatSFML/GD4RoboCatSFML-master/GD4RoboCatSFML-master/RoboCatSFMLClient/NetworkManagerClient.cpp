@@ -32,10 +32,11 @@ void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, cons
 void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const string& inName)
 {
 
-	std::cout << "[DEBUG] Init called with address: " << inServerAddress.ToString() << ", name: " << inName << std::endl;
+	std::cout << "[DEBUG] Init called." << std::endl;
+
 
 	// Use a specific client port (not 0)
-	const uint16_t clientPort = 50001; // Must be different from the server port
+	const uint16_t clientPort = 0; // Must be different from the server port
 	NetworkManager::Init(clientPort);  // <--- Changed from 0 to 50010
 
 	mServerAddress = inServerAddress;

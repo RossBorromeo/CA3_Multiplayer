@@ -24,5 +24,6 @@
 #include "ReplicationManagerClient.hpp"
 #include "NetworkManagerClient.hpp"
 #include "Client.hpp"
+#include "GameState.hpp"
 
 

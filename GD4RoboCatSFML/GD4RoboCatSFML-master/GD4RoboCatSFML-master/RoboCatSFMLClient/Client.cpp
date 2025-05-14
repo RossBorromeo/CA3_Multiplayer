@@ -15,6 +15,8 @@ bool Client::StaticInit()
 
 	//  Push the menu state to start the UI
 	client->GetStateStack().PushState(std::make_unique<MenuState>(client->GetStateStack()));
+	
+
 
 	return true;
 }
@@ -56,6 +58,8 @@ void Client::DoFrame()
 	mStateStack.Update(Timing::sInstance.GetDeltaTime());
 	mStateStack.Render(*WindowManager::sInstance);
 
+
+	mStateStack.ApplyPendingChanges();
 	// Optional: Only run game logic if connected
 	if (NetworkManagerClient::sInstance)
 	{
