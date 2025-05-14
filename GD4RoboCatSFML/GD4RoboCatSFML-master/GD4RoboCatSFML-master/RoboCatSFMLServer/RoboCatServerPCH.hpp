@@ -7,6 +7,7 @@
 #include "NetworkManagerServer.hpp"
 #include "Server.hpp"
 
+#include "HealthPickupServer.hpp"
 #include "RoboCatServer.hpp"
 #include "MouseServer.hpp"
 #include "YarnServer.hpp"

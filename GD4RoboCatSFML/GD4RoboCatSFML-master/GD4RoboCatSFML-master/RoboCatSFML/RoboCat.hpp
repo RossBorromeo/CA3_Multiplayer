@@ -13,6 +13,16 @@ public:
 		ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
 	};
 
+	int GetHealth() const { return mHealth; }
+
+	void IncreaseHealth(int inAmount)
+	{
+		if (mHealth < 10)
+		{
+			mHealth = std::min(mHealth + inAmount, 10);
+		}
+	}
+
 
 	static	GameObject* StaticCreate() { return new RoboCat(); }
 

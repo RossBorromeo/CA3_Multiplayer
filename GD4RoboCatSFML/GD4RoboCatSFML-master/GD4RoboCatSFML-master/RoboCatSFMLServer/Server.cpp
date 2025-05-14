@@ -1,11 +1,11 @@
-
 #include "RoboCatServerPCH.hpp"
 #include <iostream>
 #include <random>
 
 // Spawn timing variables
 float gTimeSinceLastMouseSpawn = 0.f;
-const float kMouseSpawnInterval = 2.f; // spawn every 2 seconds
+// spawn every 2 seconds
+const float kMouseSpawnInterval = 2.f; 
 
 bool Server::StaticInit()
 {
@@ -20,6 +20,8 @@ Server::Server()
 	GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatServer::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction('MOUS', MouseServer::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction('YARN', YarnServer::StaticCreate);
+	GameObjectRegistry::sInstance->RegisterCreationFunction('HPCK', HealthPickupServer::StaticCreate);
+
 
 	InitNetworkManager();
 
