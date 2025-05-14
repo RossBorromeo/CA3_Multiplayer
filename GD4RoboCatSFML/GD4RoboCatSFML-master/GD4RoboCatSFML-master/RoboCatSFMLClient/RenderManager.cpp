@@ -133,6 +133,27 @@ void RenderManager::Render()
 	WindowManager::sInstance->display();
 }
 
+void RenderManager::Render()
+{
+	// Clear back buffer
+	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
+
+	//Draw background first
+	sf::Sprite bgSprite;
+	bgSprite.setTexture(*TextureManager::sInstance->GetTexture("Space"));
+	bgSprite.setPosition(0.f, 0.f);
+	WindowManager::sInstance->draw(bgSprite);
+
+	// Then draw sprites and components
+	RenderComponents();
+
+	//Then draw HUD (always on top)
+	HUD::sInstance->Render();
+
+	// Present back buffer to screen
+	WindowManager::sInstance->display();
+}
+
 void RenderManager::RenderComponents()
 {
 	for (SpriteComponent* c : mComponents)
@@ -159,7 +180,7 @@ void RenderManager::RenderComponents()
 
 			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f); // 50 units above the cat
 
-			// ---- Health above cat ----
+			//Health above cat 
 			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f);
 			int health = robocat->GetHealth();
 			if (health > 0)
@@ -179,7 +200,7 @@ void RenderManager::RenderComponents()
 				WindowManager::sInstance->draw(text);
 			}
 
-			// ---- Score below cat ----
+			//Score below cat 
 			int playerId = robocat->GetPlayerId();
 			auto entry = ScoreBoardManager::sInstance->GetEntry(playerId);
 			if (entry)
@@ -201,27 +222,6 @@ void RenderManager::RenderComponents()
 			}
 		}
 	}
-}
-
-void RenderManager::Render()
-{
-	// Clear back buffer
-	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
-
-	//Draw background first
-	sf::Sprite bgSprite;
-	bgSprite.setTexture(*TextureManager::sInstance->GetTexture("Space"));
-	bgSprite.setPosition(0.f, 0.f);
-	WindowManager::sInstance->draw(bgSprite);
-
-	// Then draw sprites and components
-	RenderComponents();
-
-	//Then draw HUD (always on top)
-	HUD::sInstance->Render();
-
-	// Present back buffer to screen
-	WindowManager::sInstance->display();
 }
 
 
