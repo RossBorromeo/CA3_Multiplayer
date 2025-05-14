@@ -20,10 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.hpp" />
+    <ClInclude Include="ConnectState.hpp" />
     <ClInclude Include="FontManager.hpp" />
     <ClInclude Include="HealthPickupClient.hpp" />
     <ClInclude Include="HUD.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="MouseClient.hpp" />
     <ClInclude Include="NetworkManagerClient.hpp" />
     <ClInclude Include="PlayerSpriteComponent.hpp" />
@@ -39,10 +41,12 @@
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientMain.cpp" />
+    <ClCompile Include="ConnectState.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="HealthPickupClient.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MouseClient.cpp" />
     <ClCompile Include="NetworkManagerClient.cpp" />
     <ClCompile Include="PlayerSpriteComponent.cpp" />

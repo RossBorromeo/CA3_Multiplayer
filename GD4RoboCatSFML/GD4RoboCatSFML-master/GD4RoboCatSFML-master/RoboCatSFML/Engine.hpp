@@ -2,7 +2,8 @@ class Engine
 {
 public:
 	virtual ~Engine();
-	static std::unique_ptr<Engine> s_instance;
+	inline static std::shared_ptr<Engine> s_instance;
+
 
 	virtual int Run();
 	void SetShouldKeepRunning(bool in_should_keep_running)

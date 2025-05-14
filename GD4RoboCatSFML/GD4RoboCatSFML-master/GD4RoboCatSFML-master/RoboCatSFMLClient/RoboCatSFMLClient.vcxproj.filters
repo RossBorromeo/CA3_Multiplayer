@@ -63,6 +63,12 @@
     <ClInclude Include="HealthPickupClient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MenuState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -114,6 +120,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HealthPickupClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

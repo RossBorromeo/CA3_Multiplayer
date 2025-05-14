@@ -117,10 +117,14 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 
 	ScoreBoardManager::sInstance->AddEntry(playerId, inClientProxy->GetName());
 	SpawnCatForPlayer(playerId);
+	std::cout << "[Server] Welcoming player, into server..." << std::endl;
+
 }
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
+	std::cout << "[Server] Welcoming player, creating RoboCat..." << std::endl;
+
 	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
@@ -140,6 +144,8 @@ void Server::HandleLostClient(ClientProxyPtr inClientProxy)
 {
 	//kill client's cat
 	//remove client from scoreboard
+	std::cout << "[Server] Lost Player..." << std::endl;
+
 	int playerId = inClientProxy->GetPlayerId();
 
 	ScoreBoardManager::sInstance->RemoveEntry(playerId);

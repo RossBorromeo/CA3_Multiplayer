@@ -7,7 +7,7 @@ NetworkManagerServer::NetworkManagerServer() :
 	mNewPlayerId(1),
 	mNewNetworkId(1),
 	mTimeBetweenStatePackets(0.033f),
-	mClientDisconnectTimeout(3.f),
+	mClientDisconnectTimeout(10.f),
 	mReplicationManagerServer(new ReplicationManagerServer())
 {
 }
@@ -44,80 +44,89 @@ void NetworkManagerServer::ProcessPacket(InputMemoryBitStream& inInputStream, co
 	}
 }
 
-
-void NetworkManagerServer::ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::ProcessPacket(ClientProxyPtr client, InputMemoryBitStream& inInputStream)
 {
-	//remember we got a packet so we know not to disconnect for a bit
-	inClientProxy->UpdateLastPacketTime();
+	client->UpdateLastPacketTime();
 
-	uint32_t	packetType;
+	uint32_t packetType;
 	inInputStream.Read(packetType);
+
 	switch (packetType)
 	{
 	case kHelloCC:
-		//need to resend welcome. to be extra safe we should check the name is the one we expect from this address,
-		//otherwise something weird is going on...
-		SendWelcomePacket(inClientProxy);
+		std::cout << "[Server] Received duplicate Hello from: " << client->GetName() << std::endl;
+		SendWelcomePacket(client);
 		break;
+
 	case kInputCC:
-		if (inClientProxy->GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
+		if (client->GetDeliveryNotificationManager().ReadAndProcessState(inInputStream))
 		{
-			HandleInputPacket(inClientProxy, inInputStream);
+			HandleInputPacket(client, inInputStream);
 		}
 		break;
+
 	default:
-		LOG("Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str());
+		std::cerr << "[Server] Unknown packet type " << packetType
+			<< " from " << client->GetSocketAddress().ToString() << std::endl;
 		break;
 	}
 }
+
 
 
 void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
-	//read the beginning- is it a hello?
-	uint32_t	packetType;
+	uint32_t packetType;
 	inInputStream.Read(packetType);
-	if (packetType == kHelloCC)
+
+	std::cout << "[Server] Received new packet from: " << inFromAddress.ToString() << std::endl;
+	std::cout << "[Server] Packet type: " << packetType << std::endl;
+
+	if (packetType != kHelloCC)
 	{
-		//read the name
-		string name;
-		inInputStream.Read(name);
-		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, mNewPlayerId++);
-		mAddressToClientMap[inFromAddress] = newClientProxy;
-		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
+		std::cerr << "[Server] Unknown packet type from unknown client. Possible spoofing attempt.\n";
+		return;
+	}
 
-		//tell the server about this client, spawn a cat, etc...
-		//if we had a generic message system, this would be a good use for it...
-		//instead we'll just tell the server directly
-		static_cast<Server*> (Engine::s_instance.get())->HandleNewClient(newClientProxy);
+	std::string name;
+	inInputStream.Read(name);
+	std::cout << "[Server] Hello from client: " << name << std::endl;
 
-		//and welcome the client...
-		SendWelcomePacket(newClientProxy);
+	auto newClientProxy = std::make_shared<ClientProxy>(inFromAddress, name, mNewPlayerId++);
+	mAddressToClientMap[inFromAddress] = newClientProxy;
+	mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 
-		//and now init the replication manager with everything we know about!
-		for (const auto& pair : m_network_id_to_game_object_map)
-		{
-			newClientProxy->GetReplicationManagerServer().ReplicateCreate(pair.first, pair.second->GetAllStateMask());
-		}
+	if (auto server = std::dynamic_pointer_cast<Server>(Engine::s_instance))
+	{
+		server->HandleNewClient(newClientProxy);
 	}
 	else
 	{
-		//bad incoming packet from unknown client- we're under attack!!
-		LOG("Bad incoming packet from unknown client at socket %s", inFromAddress.ToString().c_str());
+		std::cerr << "[Server] Engine::s_instance not properly initialized!\n";
+	}
+
+	SendWelcomePacket(newClientProxy);
+
+	for (const auto& [networkId, gameObject] : m_network_id_to_game_object_map)
+	{
+		newClientProxy->GetReplicationManagerServer().ReplicateCreate(networkId, gameObject->GetAllStateMask());
 	}
 }
 
-void NetworkManagerServer::SendWelcomePacket(ClientProxyPtr inClientProxy)
+
+void NetworkManagerServer::SendWelcomePacket(ClientProxyPtr client)
 {
 	OutputMemoryBitStream welcomePacket;
-
 	welcomePacket.Write(kWelcomeCC);
-	welcomePacket.Write(inClientProxy->GetPlayerId());
+	welcomePacket.Write(client->GetPlayerId());
 
-	LOG("Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId());
+	std::cout << "[Server] Sending welcome to " << client->GetName()
+		<< " (PlayerID=" << client->GetPlayerId() << ") at "
+		<< client->GetSocketAddress().ToString() << std::endl;
 
-	SendPacket(welcomePacket, inClientProxy->GetSocketAddress());
+	SendPacket(welcomePacket, client->GetSocketAddress());
 }
+
 
 void NetworkManagerServer::RespawnCats()
 {
@@ -273,18 +282,26 @@ void NetworkManagerServer::CheckForDisconnects()
 	}
 }
 
-void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy)
+void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr client)
 {
-	mPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
-	mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
-	static_cast<Server*> (Engine::s_instance.get())->HandleLostClient(inClientProxy);
+	std::cout << "[Server] Client disconnected: " << client->GetName()
+		<< " (PlayerID=" << client->GetPlayerId() << ")" << std::endl;
 
-	//was that the last client? if so, bye!
+	mPlayerIdToClientMap.erase(client->GetPlayerId());
+	mAddressToClientMap.erase(client->GetSocketAddress());
+
+	if (auto server = std::dynamic_pointer_cast<Server>(Engine::s_instance))
+	{
+		server->HandleLostClient(client);
+	}
+
 	if (mAddressToClientMap.empty())
 	{
+		std::cout << "[Server] No more clients connected. Stopping server." << std::endl;
 		Engine::s_instance->SetShouldKeepRunning(false);
 	}
 }
+
 
 void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)
 {

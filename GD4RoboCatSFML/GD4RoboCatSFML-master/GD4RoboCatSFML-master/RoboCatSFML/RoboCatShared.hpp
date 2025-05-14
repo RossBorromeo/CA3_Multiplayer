@@ -36,6 +36,7 @@ const int SOCKET_ERROR = -1;
 #include "unordered_set"
 #include "cassert"
 #include <fstream>
+#include <iostream>
 
 using std::shared_ptr;
 using std::unique_ptr;
@@ -64,6 +65,8 @@ class GameObject;
 #include "TCPSocket.hpp"
 #include "SocketUtil.hpp"
 
+#include "State.hpp"
+#include "StateStack.hpp"
 #include "MemoryBitStream.hpp"
 #include "LinkingContext.hpp"
 #include "ByteSwap.hpp"
@@ -72,6 +75,7 @@ class GameObject;
 #include "InFlightPacket.hpp"
 #include "AckRange.hpp"
 #include "DeliveryNotificationManager.hpp"
+
 
 #include "InputAction.hpp"
 #include "InputState.hpp"

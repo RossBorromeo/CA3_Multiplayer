@@ -181,6 +181,8 @@
     <ClInclude Include="SocketAddressFactory.hpp" />
     <ClInclude Include="SocketUtil.hpp" />
     <ClInclude Include="SoundManager.hpp" />
+    <ClInclude Include="State.hpp" />
+    <ClInclude Include="StateStack.hpp" />
     <ClInclude Include="StringUtils.hpp" />
     <ClInclude Include="TCPSocket.hpp" />
     <ClInclude Include="Timing.hpp" />
@@ -221,6 +223,8 @@
     <ClCompile Include="SocketAddressFactory.cpp" />
     <ClCompile Include="SocketUtil.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateStack.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Timing.cpp" />

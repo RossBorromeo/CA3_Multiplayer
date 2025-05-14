@@ -18,7 +18,8 @@
 #include "YarnClient.hpp"
 
 #include "HUD.hpp"
-
+#include "MenuState.hpp"
+#include "ConnectState.hpp"
 
 #include "ReplicationManagerClient.hpp"
 #include "NetworkManagerClient.hpp"

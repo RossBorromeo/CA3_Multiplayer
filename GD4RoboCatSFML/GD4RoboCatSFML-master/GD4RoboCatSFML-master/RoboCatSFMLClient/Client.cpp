@@ -2,22 +2,23 @@
 
 bool Client::StaticInit()
 {
-	// Create the Client pointer first because it initializes SDL
 	Client* client = new Client();
-	InputManager::StaticInit();
 
+	InputManager::StaticInit();
 	WindowManager::StaticInit();
 	FontManager::StaticInit();
 	TextureManager::StaticInit();
 	RenderManager::StaticInit();
-	
-
 	HUD::StaticInit();
 
 	s_instance.reset(client);
 
+	//  Push the menu state to start the UI
+	client->GetStateStack().PushState(std::make_unique<MenuState>(client->GetStateStack()));
+
 	return true;
 }
+
 
 Client::Client()
 {
@@ -26,13 +27,13 @@ Client::Client()
 	GameObjectRegistry::sInstance->RegisterCreationFunction('YARN', YarnClient::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction('HPCK', HealthPickupClient::StaticCreate);
 
+	//Might need this so DONT DELETE
+	//string destination = StringUtils::GetCommandLineArg(1);
+	//string name = StringUtils::GetCommandLineArg(2);
 
-	string destination = StringUtils::GetCommandLineArg(1);
-	string name = StringUtils::GetCommandLineArg(2);
+	//SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(destination);
 
-	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(destination);
-
-	NetworkManagerClient::StaticInit(*serverAddress, name);
+	//NetworkManagerClient::StaticInit(*serverAddress, name);
 
 	//NetworkManagerClient::sInstance->SetSimulatedLatency(0.0f);
 }
@@ -41,16 +42,38 @@ Client::Client()
 
 void Client::DoFrame()
 {
-	InputManager::sInstance->Update();
+	sf::Event event;
+	while (PollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+		{
+			WindowManager::sInstance->close();
+		}
+			 
+		mStateStack.HandleInput(event);
+	}
 
-	Engine::DoFrame();
+	mStateStack.Update(Timing::sInstance.GetDeltaTime());
+	mStateStack.Render(*WindowManager::sInstance);
 
-	NetworkManagerClient::sInstance->ProcessIncomingPackets();
+	// Optional: Only run game logic if connected
+	if (NetworkManagerClient::sInstance)
+	{
+		InputManager::sInstance->Update();
+		NetworkManagerClient::sInstance->ProcessIncomingPackets();
+		NetworkManagerClient::sInstance->SendOutgoingPackets();
+		Engine::DoFrame();
+		
+		RenderManager::sInstance->Render();
+		
+	}
 
-	RenderManager::sInstance->Render();
-
-	NetworkManagerClient::sInstance->SendOutgoingPackets();
+	//  CRUCIAL: Display the window!
+	WindowManager::sInstance->display(); // <- Without this, the window stays white
 }
+
+
+
 
 void Client::HandleEvent(sf::Event& p_event)
 {

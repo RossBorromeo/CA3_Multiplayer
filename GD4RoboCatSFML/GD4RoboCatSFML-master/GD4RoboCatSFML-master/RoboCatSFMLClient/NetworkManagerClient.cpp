@@ -15,15 +15,28 @@ NetworkManagerClient::NetworkManagerClient() :
 {
 }
 
-void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, const string& inName)
+void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, const std::string& inName)
 {
-	sInstance = new NetworkManagerClient();
-	return sInstance->Init(inServerAddress, inName);
+	if (!sInstance)
+	{
+		sInstance = new NetworkManagerClient();
+		sInstance->Init(inServerAddress, inName);
+	}
+	else
+	{
+		std::cerr << "[NetworkManagerClient] StaticInit called twice. Ignoring.\n";
+	}
 }
+
 
 void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const string& inName)
 {
-	NetworkManager::Init(0);
+
+	std::cout << "[DEBUG] Init called with address: " << inServerAddress.ToString() << ", name: " << inName << std::endl;
+
+	// Use a specific client port (not 0)
+	const uint16_t clientPort = 50001; // Must be different from the server port
+	NetworkManager::Init(clientPort);  // <--- Changed from 0 to 50010
 
 	mServerAddress = inServerAddress;
 	mState = NCS_SayingHello;
@@ -32,6 +45,7 @@ void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const stri
 
 	mAvgRoundTripTime = WeightedTimedMovingAverage(1.f);
 }
+
 
 void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
@@ -78,26 +92,30 @@ void NetworkManagerClient::UpdateSayingHello()
 
 void NetworkManagerClient::SendHelloPacket()
 {
+	std::cout << "[Client] Sending HELLO packet to " << mServerAddress.ToString() << std::endl;
 	OutputMemoryBitStream helloPacket;
 
 	helloPacket.Write(kHelloCC);
 	helloPacket.Write(mName);
 
 	SendPacket(helloPacket, mServerAddress);
+	
+
 }
 
 void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStream)
 {
 	if (mState == NCS_SayingHello)
 	{
-		//if we got a player id, we've been welcomed!
 		int playerId;
 		inInputStream.Read(playerId);
 		mPlayerId = playerId;
 		mState = NCS_Welcomed;
+
 		LOG("'%s' was welcomed on client as player %d", mName.c_str(), mPlayerId);
 	}
 }
+
 
 
 

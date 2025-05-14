@@ -1,8 +1,15 @@
+#include "StateStack.hpp"
+
 class Client : public Engine
 {
+	
 public:
 
 	static bool StaticInit();
+
+	inline static std::unique_ptr<Client> s_instance;
+
+	StateStack& GetStateStack() { return mStateStack; }
 
 protected:
 
@@ -13,5 +20,5 @@ protected:
 	virtual bool	PollEvent(sf::Event& p_event) override;
 
 private:
-
+	StateStack mStateStack;
 };

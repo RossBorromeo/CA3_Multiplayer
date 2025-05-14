@@ -1,6 +1,7 @@
 #include "RoboCatPCH.hpp"
 
-std::unique_ptr<Engine> Engine::s_instance;
+inline static std::shared_ptr<Engine> s_instance = nullptr;
+
 
 Engine::Engine() : m_should_keep_running(true)
 {
