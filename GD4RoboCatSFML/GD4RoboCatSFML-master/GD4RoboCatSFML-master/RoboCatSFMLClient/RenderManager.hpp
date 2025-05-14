@@ -1,32 +1,31 @@
-//I take care of rendering things!
+#pragma once
 
+
+
+class SpriteComponent;
 class RenderManager
 {
 public:
+    static void StaticInit();
+    static std::unique_ptr<RenderManager> sInstance;
 
-	static void StaticInit();
-	static std::unique_ptr< RenderManager >	sInstance;
+    void Render();
+    void RenderComponents();
 
-	void Render();
-	void RenderComponents();
-
-	//vert inefficient method of tracking scene graph...
-	void AddComponent(SpriteComponent* inComponent);
-	void RemoveComponent(SpriteComponent* inComponent);
-	int	 GetComponentIndex(SpriteComponent* inComponent) const;
+    void AddComponent(SpriteComponent* inComponent);
+    void RemoveComponent(SpriteComponent* inComponent);
+    int GetComponentIndex(SpriteComponent* inComponent) const;
 
 private:
+    RenderManager();
 
-	RenderManager();
+    void UpdateCamera();
+    sf::Vector2f FindCatCentre(); // <-- ADDED: Helper to get player position safely
 
-	//this can't be only place that holds on to component- it has to live inside a GameObject in the world
-	vector< SpriteComponent* >		mComponents;
+    std::vector<SpriteComponent*> mComponents;
+    sf::View view;
 
-	sf::View view;
-
-	// Background scroll
-	float mBackgroundScrollOffset = 0.f;
+    sf::Vector2f mLastPlayerPosition; // For smooth interpolation fallback
+    sf::Vector2f m_lastCatPos;
 
 };
-
-

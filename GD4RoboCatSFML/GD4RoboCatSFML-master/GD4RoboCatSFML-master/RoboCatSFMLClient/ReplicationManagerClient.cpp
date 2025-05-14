@@ -1,5 +1,5 @@
 #include "RoboCatClientPCH.hpp"
-#include <cassert>
+
 
 void ReplicationManagerClient::Read(InputMemoryBitStream& inInputStream)
 {
