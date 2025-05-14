@@ -9,11 +9,11 @@ void SoundManager::StaticInit()
 
 SoundManager::SoundManager()
 {
-	LoadSoundFromFile(pickup, pickupB, "../Assets/audio/Pickup.wav");
-	LoadSoundFromFile(shoot, shootB, "../Assets/audio/hit.wav");
+	
+	LoadSoundFromFile(shoot, shootB, "../Assets/audio/shoot.wav");
 	LoadSoundFromFile(death, deathB, "../Assets/audio/death.wav");
 	LoadSoundFromFile(join, joinB, "../Assets/audio/join.wav");
-	LoadMusicFromFile(bgMusic, "../Assets/audio/background.wav");
+	LoadMusicFromFile(bgMusic, "../Assets/audio/background.mp3");
 }
 
 void SoundManager::LoadSoundFromFile(sf::Sound& p_sound, sf::SoundBuffer& p_buffer, string p_file)
@@ -21,15 +21,26 @@ void SoundManager::LoadSoundFromFile(sf::Sound& p_sound, sf::SoundBuffer& p_buff
 	if (p_buffer.loadFromFile(p_file))
 	{
 		p_sound.setBuffer(p_buffer);
-		p_sound.setVolume(35);
+		p_sound.setVolume(25);
+	}
+	else
+	{
+		LOG("Failed to load sound: %s", p_file.c_str());
 	}
 }
 
+
 void SoundManager::LoadMusicFromFile(sf::Music& p_music, string p_file)
 {
-	p_music.openFromFile(p_file);
-	p_music.setLoop(true);
-	p_music.setVolume(20);
+	if (p_music.openFromFile(p_file))
+	{
+		p_music.setLoop(true);
+		p_music.setVolume(10);
+	}
+	else
+	{
+		LOG("Failed to load music file: %s", p_file.c_str());
+	}
 }
 
 void SoundManager::PlayMusic()

@@ -68,6 +68,9 @@ void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, Repl
 
 			//let's pretend everything was written- don't make this too hard
 			replicationCommand.ClearDirtyState(writtenState);
+			// Extra: ensure PlayDeathSound is only sent once
+			writtenState &= ~RoboCat::ECRS_PlayDeathSound;
+
 
 		}
 	}

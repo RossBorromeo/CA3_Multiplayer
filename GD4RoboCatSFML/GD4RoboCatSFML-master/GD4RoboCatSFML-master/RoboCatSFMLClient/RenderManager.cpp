@@ -108,51 +108,6 @@ sf::Vector2f RenderManager::FindCatCentre()
 		}
 	}
 }
-void RenderManager::Render()
-{
-	UpdateCamera();
-
-	// Clear back buffer
-	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
-
-	// Draw background first
-	sf::Sprite bgSprite;
-	bgSprite.setTexture(*TextureManager::sInstance->GetTexture("Space"));
-	bgSprite.setPosition(0.f, 0.f);
-	WindowManager::sInstance->draw(bgSprite);
-
-	// Then draw sprites and components
-	RenderComponents();
-
-	// Draw HUD on top
-	HUD::sInstance->Render();
-
-
-
-	// Present to screen
-	WindowManager::sInstance->display();
-}
-
-void RenderManager::Render()
-{
-	// Clear back buffer
-	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
-
-	//Draw background first
-	sf::Sprite bgSprite;
-	bgSprite.setTexture(*TextureManager::sInstance->GetTexture("Space"));
-	bgSprite.setPosition(0.f, 0.f);
-	WindowManager::sInstance->draw(bgSprite);
-
-	// Then draw sprites and components
-	RenderComponents();
-
-	//Then draw HUD (always on top)
-	HUD::sInstance->Render();
-
-	// Present back buffer to screen
-	WindowManager::sInstance->display();
-}
 
 void RenderManager::RenderComponents()
 {
@@ -169,7 +124,7 @@ void RenderManager::RenderComponents()
 		if (mouse)
 		{
 			Vector3 loc = mouse->GetLocation();
-			Vector3 textLoc = loc + Vector3(0.f, -40.f, 0.f); 
+			Vector3 textLoc = loc + Vector3(0.f, -40.f, 0.f);
 
 			int health = mouse->GetHealth();
 		}
@@ -177,8 +132,6 @@ void RenderManager::RenderComponents()
 		if (robocat)
 		{
 			Vector3 loc = robocat->GetLocation();
-
-			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f); // 50 units above the cat
 
 			//Health above cat 
 			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f);
@@ -224,5 +177,29 @@ void RenderManager::RenderComponents()
 	}
 }
 
+void RenderManager::Render()
+{
+	UpdateCamera();
+
+	// Clear back buffer
+	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
+
+	// Draw background first
+	sf::Sprite bgSprite;
+	bgSprite.setTexture(*TextureManager::sInstance->GetTexture("Space"));
+	bgSprite.setPosition(0.f, 0.f);
+	WindowManager::sInstance->draw(bgSprite);
+
+	// Then draw sprites and components
+	RenderComponents();
+
+	// Draw HUD on top
+	HUD::sInstance->Render();
+
+
+
+	// Present to screen
+	WindowManager::sInstance->display();
+}
 
 

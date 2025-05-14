@@ -83,6 +83,9 @@ void RoboCatServer::TakeDamage(int inDamagingPlayerId)
 		ScoreBoardManager::sInstance->IncScore(inDamagingPlayerId, 1);
 
 		//and you want to die
+
+		NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_PlayDeathSound);
+
 		SetDoesWantToDie(true);
 
 		//tell the client proxy to make you a new cat
