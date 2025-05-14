@@ -1,10 +1,11 @@
 
 #include "RoboCatServerPCH.hpp"
 #include <iostream>
+#include <random>
 
-
-
-//uncomment this when you begin working on the server
+// Spawn timing variables
+float gTimeSinceLastMouseSpawn = 0.f;
+const float kMouseSpawnInterval = 2.f; // spawn every 2 seconds
 
 bool Server::StaticInit()
 {
@@ -48,22 +49,28 @@ bool Server::InitNetworkManager()
 	return NetworkManagerServer::StaticInit(port);
 }
 
+GameObjectPtr CreateSingleMouse()
+{
+	Vector3 mouseMin(100.f, 100.f, 0.f);
+	Vector3 mouseMax(1180.f, 620.f, 0.f);
+
+	GameObjectPtr go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
+	Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
+	go->SetLocation(mouseLocation);
+
+	return go;
+}
+
+
 
 namespace
 {
 
 	void CreateRandomMice(int inMouseCount)
 	{
-		Vector3 mouseMin(100.f, 100.f, 0.f);
-		Vector3 mouseMax(1180.f, 620.f, 0.f);
-		GameObjectPtr go;
-
-		//make a mouse somewhere- where will these come from?
 		for (int i = 0; i < inMouseCount; ++i)
 		{
-			go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
-			Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
-			go->SetLocation(mouseLocation);
+			CreateSingleMouse();
 		}
 	}
 }
@@ -87,6 +94,15 @@ void Server::DoFrame()
 	NetworkManagerServer::sInstance->RespawnCats();
 
 	Engine::DoFrame();
+
+	//Infinite Mouse Spawning
+	gTimeSinceLastMouseSpawn += Timing::sInstance.GetDeltaTime();
+	if (gTimeSinceLastMouseSpawn > kMouseSpawnInterval)
+	{
+		CreateSingleMouse();
+		gTimeSinceLastMouseSpawn = 0.f;
+	}
+
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 
