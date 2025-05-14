@@ -13,6 +13,7 @@ TextureManager::TextureManager()
 	CacheTexture("Asteroid", "../Assets/Asteroid.png");
 	CacheTexture("Laser", "../Assets/Laser.png");
 	CacheTexture("Space", "../Assets/NewSpace.png");
+	CacheTexture("Health", "../Assets/Health.png");
 
 }
 

@@ -12,6 +12,7 @@
 #include "RenderManager.hpp"
 #include "WindowManager.hpp"
 
+#include "HealthPickupClient.hpp"
 #include "RoboCatClient.hpp"
 #include "MouseClient.hpp"
 #include "YarnClient.hpp"
