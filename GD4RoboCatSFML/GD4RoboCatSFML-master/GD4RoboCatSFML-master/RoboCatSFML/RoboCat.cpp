@@ -6,7 +6,7 @@ const float WORLD_WIDTH = 1920.f;
 RoboCat::RoboCat() :
 	GameObject(),
 	mMaxRotationSpeed(100.f),
-	mMaxLinearSpeed(5000.f),
+	mMaxLinearSpeed(6000.f),
 	mVelocity(Vector3::Zero),
 	mWallRestitution(0.1f),
 	mCatRestitution(0.1f),
