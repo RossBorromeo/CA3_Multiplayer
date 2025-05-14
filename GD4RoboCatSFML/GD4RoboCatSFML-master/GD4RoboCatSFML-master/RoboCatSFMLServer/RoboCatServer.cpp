@@ -66,7 +66,7 @@ void RoboCatServer::HandleShooting()
 	if (mIsShooting && Timing::sInstance.GetFrameStartTime() > mTimeOfNextShot)
 	{
 		//not exact, but okay
-		mTimeOfNextShot = time + mTimeBetweenShots;
+		mTimeOfNextShot = time + mTimeBetweenShots +0.5;
 
 		//fire!
 		YarnPtr yarn = std::static_pointer_cast<Yarn>(GameObjectRegistry::sInstance->CreateGameObject('YARN'));
