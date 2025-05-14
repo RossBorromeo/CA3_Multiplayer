@@ -148,7 +148,7 @@ void RenderManager::RenderComponents()
 		if (mouse)
 		{
 			Vector3 loc = mouse->GetLocation();
-			Vector3 textLoc = loc + Vector3(0.f, -40.f, 0.f); // slightly above mouse
+			Vector3 textLoc = loc + Vector3(0.f, -40.f, 0.f); 
 
 			int health = mouse->GetHealth();
 		}
@@ -156,8 +156,11 @@ void RenderManager::RenderComponents()
 		if (robocat)
 		{
 			Vector3 loc = robocat->GetLocation();
-			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f);
 
+			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f); // 50 units above the cat
+
+			// ---- Health above cat ----
+			Vector3 textLoc = loc + Vector3(0.f, -50.f, 0.f);
 			int health = robocat->GetHealth();
 			if (health > 0)
 			{
@@ -175,6 +178,51 @@ void RenderManager::RenderComponents()
 
 				WindowManager::sInstance->draw(text);
 			}
+
+			// ---- Score below cat ----
+			int playerId = robocat->GetPlayerId();
+			auto entry = ScoreBoardManager::sInstance->GetEntry(playerId);
+			if (entry)
+			{
+				std::string scoreStr = StringUtils::Sprintf("Score: %d", entry->GetScore());
+				Vector3 scoreLoc = loc + Vector3(0.f, 40.f, 0.f); // 40 units below
+
+				sf::Text scoreText;
+				scoreText.setString(scoreStr);
+				scoreText.setFillColor(sf::Color::White);
+				scoreText.setCharacterSize(18);
+				scoreText.setFont(*FontManager::sInstance->GetFont("Pixel"));
+
+				sf::FloatRect scoreBounds = scoreText.getLocalBounds();
+				scoreText.setOrigin(scoreBounds.width / 2.f, scoreBounds.height / 2.f);
+				scoreText.setPosition(scoreLoc.mX, scoreLoc.mY);
+
+				WindowManager::sInstance->draw(scoreText);
+			}
 		}
 	}
 }
+
+void RenderManager::Render()
+{
+	// Clear back buffer
+	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
+
+	//Draw background first
+	sf::Sprite bgSprite;
+	bgSprite.setTexture(*TextureManager::sInstance->GetTexture("Space"));
+	bgSprite.setPosition(0.f, 0.f);
+	WindowManager::sInstance->draw(bgSprite);
+
+	// Then draw sprites and components
+	RenderComponents();
+
+	//Then draw HUD (always on top)
+	HUD::sInstance->Render();
+
+	// Present back buffer to screen
+	WindowManager::sInstance->display();
+}
+
+
+
